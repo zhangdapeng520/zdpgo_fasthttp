@@ -2,28 +2,24 @@ package bytebufferpool
 
 import "io"
 
-// ByteBuffer provides byte buffer, which can be used for minimizing
-// memory allocations.
+// ByteBuffer 提供字节缓冲区，可用于最小化内存分配。
 //
-// ByteBuffer may be used with functions appending data to the given []byte
-// slice. See example code for details.
-//
-// Use Get for obtaining an empty byte buffer.
+// ByteBuffer 可以与向给定的[]byte追加数据的函数一起使用
+// 使用Get获取空字节缓冲区。
 type ByteBuffer struct {
 
-	// B is a byte buffer to use in append-like workloads.
-	// See example code for details.
+	// B 是在类似于追加的工作负载中使用的字节缓冲区。
 	B []byte
 }
 
-// Len returns the size of the byte buffer.
+// Len 返回字节缓冲区的大小。
 func (b *ByteBuffer) Len() int {
 	return len(b.B)
 }
 
-// ReadFrom implements io.ReaderFrom.
+// ReadFrom 实现 io.ReaderFrom.
 //
-// The function appends all the data read from r to b.
+// 返回字节缓冲区的大小。 该函数将从r读取的所有数据追加到b。
 func (b *ByteBuffer) ReadFrom(r io.Reader) (int64, error) {
 	p := b.B
 	nStart := int64(len(p))
@@ -55,20 +51,20 @@ func (b *ByteBuffer) ReadFrom(r io.Reader) (int64, error) {
 	}
 }
 
-// WriteTo implements io.WriterTo.
+// WriteTo 实现 io.WriterTo.
 func (b *ByteBuffer) WriteTo(w io.Writer) (int64, error) {
 	n, err := w.Write(b.B)
 	return int64(n), err
 }
 
-// Bytes returns b.B, i.e. all the bytes accumulated in the buffer.
+// Bytes 返回b.B，即缓冲区中累计的所有字节。
 //
 // The purpose of this function is bytes.Buffer compatibility.
 func (b *ByteBuffer) Bytes() []byte {
 	return b.B
 }
 
-// Write implements io.Writer - it appends p to ByteBuffer.B
+// Write 实现 io.Writer - it appends p to ByteBuffer.B
 func (b *ByteBuffer) Write(p []byte) (int, error) {
 	b.B = append(b.B, p...)
 	return len(p), nil

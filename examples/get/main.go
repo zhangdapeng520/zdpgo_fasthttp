@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"github.com/zhangdapeng520/zdpgo_fasthttp"
+	"github.com/zhangdapeng520/zdpgo_log"
 )
 
 /*
@@ -16,17 +16,8 @@ import (
 func main() {
 	url := `http://httpbin.org/get`
 
-	// 发送GET请求
-	status, resp, err := zdpgo_fasthttp.Get(nil, url)
-	if err != nil {
-		fmt.Println("请求失败:", err.Error())
-		return
-	}
+	f := zdpgo_fasthttp.New(zdpgo_log.Tmp)
 
-	// 查看请求状态
-	if status != zdpgo_fasthttp.StatusOK {
-		fmt.Println("请求没有成功:", status)
-		return
-	}
-	fmt.Println(string(resp))
+	// 发送GET请求
+	f.Get(url)
 }
